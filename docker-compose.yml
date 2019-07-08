@@ -1,0 +1,25 @@
+# Use root/example as user/password credentials
+version: '3.7'
+
+services:
+  server:
+    build: ./server/
+    container_name: ncx-server
+    ports:
+      - 3000:3000
+    volumes:
+      - ./server/api:/app/api
+      - ./server/models:/app/models
+      - ./server/app.js:/app/app.js
+    command: npm run dev
+  
+  client:
+    build: ./client/
+    container_name: ncx-client
+    ports:
+      - 8080:8080
+    volumes:
+      - ./client/public:/app/public
+      - ./client/src:/app/src
+    command: npm run serve
+
