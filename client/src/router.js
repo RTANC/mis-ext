@@ -1,9 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Signin from './views/Signin.vue'
-import Subject from './views/Subject.vue'
-import Register from './views/Register.vue'
-import Admin from './views/Admin.vue'
+import Task from './views/Task.vue'
+import Activitie from './views/Activitie.vue'
 
 Vue.use(Router)
 
@@ -13,23 +11,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'signin',
-      component: Signin,
+      name: 'Task',
+      component: Task,
     },
     {
-      path: '/subject',
-      name: 'Subject',
-      component: Subject,
-    },
-    {
-      path: '/register',
-      name: 'Register',
-      component: Register
-    },
-    {
-      path: '/admin',
-      name: 'Admin',
-      component: Admin
+      path: 'mis-ext/Task/:taskId/Activitie',
+      name: 'Activitie',
+      component: Activitie,
     }
   ]
 })

@@ -4,7 +4,7 @@ version: '3.7'
 services:
   server:
     build: ./server/
-    container_name: ncx-server
+    container_name: mis-ext-server
     ports:
       - 3000:3000
     volumes:
@@ -15,7 +15,7 @@ services:
   
   client:
     build: ./client/
-    container_name: ncx-client
+    container_name: mis-ext-client
     ports:
       - 8080:8080
     volumes:
