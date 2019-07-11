@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <title>MIS</title>
+  <style>
+    #app {
+      background-attachment: local;
+      background-image: url('https://raw.githubusercontent.com/RTANC/background/master/stockvault-geometric-material-design-background241062.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <v-app>
+      <v-toolbar app dark>
+        <v-toolbar-title class="headline text-uppercase">
+          <span class="font-weight-light"> ระบบสารสนเทศเพื่อการตัดสินใจ</span>
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+
+        </v-toolbar-items>
+      </v-toolbar>
+      <v-content>
+        <v-container grid-list-md fluid fill-height>
+          <v-layout row wrap>
+            <v-flex xs12>
+              <v-card>
+                <v-card-title primary-title class="title">
+                  ภาพรวมโครงการ
+                </v-card-title>
+                <v-card-text>
+                  <v-container grid-list-md fluid fill-height>
+                    <v-layout row wrap>
+                      <v-flex xs12 sm6 md6>
+                        <v-select :items="years" v-model="year" label="ปีงบประมาณ"></v-select>
+                      </v-flex>
+                      <v-flex xs12 sm6 md6>
+                        <v-list dense>
+                          <!-- <v-divider></v-divider> -->
+                          <v-list-tile>
+                            <v-list-tile-action>
+                              <v-icon color="info">label</v-icon>
+                            </v-list-tile-action>
+                            <v-list-tile-content>จำนวนโครงการ:</v-list-tile-content>
+                            <v-list-tile-content class="align-end">{{ task }}</v-list-tile-content>
+                          </v-list-tile>
+                          <!-- <v-divider></v-divider> -->
+                          <v-list-tile>
+                            <v-list-tile-action>
+                              <v-icon color="info">label</v-icon>
+                            </v-list-tile-action>
+                            <v-list-tile-content>จำนวนกิจกรรม:</v-list-tile-content>
+                            <v-list-tile-content class="align-end">{{ activitie }}</v-list-tile-content>
+                          </v-list-tile>
+                          <!-- <v-divider></v-divider> -->
+                          <v-list-tile>
+                            <v-list-tile-action>
+                              <v-icon color="info">label</v-icon>
+                            </v-list-tile-action>
+                            <v-list-tile-content>ความสำเร็จโครงการ ( % ):</v-list-tile-content>
+                            <v-list-tile-content class="align-end">{{ success[0] }}</v-list-tile-content>
+                          </v-list-tile>
+                          <!-- <v-divider></v-divider> -->
+                        </v-list>
+                      </v-flex>
+                      <v-flex xs12 sm6 md6>
+                        <apexchart type=line height=350 :options="chartOptions2" :series="series" />
+                      </v-flex>
+                      <v-flex xs12 sm6 md6>
+                        <apexchart type=radialBar height=350 :options="chartOptions1" :series="success" />
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-card-text>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-content>
+    </v-app>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-apexcharts"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      components: { 'apexchart': VueApexCharts },
+      data() {
+        return {
+          years: [2562, 2561, 2560, 2559, 2558, 2557, 2556, 2555],
+          year: 2560,
+          task: 0,
+          activitie: 0,
+          success: [80],
+          chartOptions1: {
+            plotOptions: {
+              radialBar: {
+                hollow: {
+                  size: '70%',
+                }
+              },
+            },
+            labels: ['ความสำเร็จโครงการ']
+          },
+          series: [{
+            name: "จำนวน",
+            data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+          }],
+          chartOptions2: {
+            chart: {
+              height: 350,
+              zoom: {
+                enabled: false
+              }
+            },
+            dataLabels: {
+              enabled: false
+            },
+            stroke: {
+              curve: 'straight'
+            },
+            title: {
+              text: 'ประวัติโครงการ ย้อนหลัง',
+              align: 'left'
+            },
+            grid: {
+              row: {
+                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                opacity: 0.5
+              },
+            },
+            xaxis: {
+              categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+            }
+          }
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
