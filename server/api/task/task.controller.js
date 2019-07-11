@@ -1,13 +1,20 @@
 const sequelize = require('sequelize')
-const { Task } = require('../../models')
+const { Task, budgetDetail, taskType } = require('../../models')
 
 exports.getTasks = async (req, res, next) => {
     try {
         const tasks = await Task.findAll({
+            attributes: ['tsk_id', 'tsk_name', 'tsk_flag', 'tsk_process_status', 'task_type_id'],
             where: {
                 tsk_year: req.query.year,
-                tsk_flag: 1
-            }
+                tsk_flag: req.query.tsk_flag
+            },
+            include: [{
+                model: budgetDetail,
+                attributes: ['budget_flag'],
+                where: { budget_detail_status: 1 },
+                required: false
+            }]
         })
         res.status(200).send(tasks)
     } catch (error) {
