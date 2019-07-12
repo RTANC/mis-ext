@@ -44,23 +44,20 @@
                       </v-flex>
                       <v-flex xs12 sm6 md6>
                         <v-list dense>
-                          <!-- <v-divider></v-divider> -->
                           <v-list-tile>
                             <v-list-tile-action>
                               <v-icon color="info">label</v-icon>
                             </v-list-tile-action>
                             <v-list-tile-content>จำนวนโครงการ:</v-list-tile-content>
-                            <v-list-tile-content class="align-end">{{ task }}</v-list-tile-content>
+                            <v-list-tile-content class="align-end">{{ tasks.length }}</v-list-tile-content>
                           </v-list-tile>
-                          <!-- <v-divider></v-divider> -->
                           <v-list-tile>
                             <v-list-tile-action>
                               <v-icon color="info">label</v-icon>
                             </v-list-tile-action>
                             <v-list-tile-content>จำนวนกิจกรรม:</v-list-tile-content>
-                            <v-list-tile-content class="align-end">{{ activitie }}</v-list-tile-content>
+                            <v-list-tile-content class="align-end">{{ activities.length }}</v-list-tile-content>
                           </v-list-tile>
-                          <!-- <v-divider></v-divider> -->
                           <v-list-tile>
                             <v-list-tile-action>
                               <v-icon color="info">label</v-icon>
@@ -68,7 +65,6 @@
                             <v-list-tile-content>ความสำเร็จโครงการ ( % ):</v-list-tile-content>
                             <v-list-tile-content class="align-end">{{ success[0] }}</v-list-tile-content>
                           </v-list-tile>
-                          <!-- <v-divider></v-divider> -->
                         </v-list>
                       </v-flex>
                       <v-flex xs12 sm6 md6>
@@ -76,6 +72,23 @@
                       </v-flex>
                       <v-flex xs12 sm6 md6>
                         <apexchart type=radialBar height=350 :options="chartOptions1" :series="success" />
+                      </v-flex>
+                      <v-flex xs12 sm6 md6>
+                        <apexchart type=pie width=380 :options="chartOptions3" :series="budgetTypes" />
+                      </v-flex>
+                      <v-flex xs12>
+                        <v-data-table :headers="headers" :items="tasks" class="elevation-1">
+                          <template slot="items" slot-scope="props">
+                            <tr>
+                              <td>{{ props.item.tsk_name }}</td>
+                              <td class="text-xs-right">{{ processStatus[(props.item.tsk_process_status)-1] }}</td>
+                              <td class="text-xs-right">
+                                <v-btn flat icon color="info">
+                                <v-icon>search</v-icon>
+                              </v-btn></td>
+                            </tr>
+                          </template>
+                        </v-data-table>
                       </v-flex>
                     </v-layout>
                   </v-container>
@@ -92,17 +105,35 @@
   <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue-apexcharts"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
     new Vue({
       el: '#app',
       components: { 'apexchart': VueApexCharts },
       data() {
         return {
+          processStatus: ['ขออนุมัติ', 'กำลังดำเนินการ', 'เสร็จสิ้น'],
+          headers: [{
+            text: 'ชื่อโครงการ',
+            align: 'center',
+            sortable: false,
+            value: 'tsk_name'
+          }, {
+            text: 'สถานะโครงการ',
+            align: 'center',
+            sortable: false,
+            value: 'tsk_process_status'
+          }, {
+            text: 'รายละเอียด',
+            align: 'center',
+            sortable: false,
+            value: 'tsk_detail'
+          }],
           years: [2562, 2561, 2560, 2559, 2558, 2557, 2556, 2555],
-          year: 2560,
-          task: 0,
-          activitie: 0,
-          success: [80],
+          year: 2557,
+          activities: [],
+          tasks: [],
+          success: [0],
           chartOptions1: {
             plotOptions: {
               radialBar: {
@@ -115,7 +146,7 @@
           },
           series: [{
             name: "จำนวน",
-            data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+            data: []
           }],
           chartOptions2: {
             chart: {
@@ -141,10 +172,71 @@
               },
             },
             xaxis: {
-              categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+              categories: [2555, 2556, 2557, 2558, 2560],
             }
+          },
+          budgetTypes: [0, 0, 0],
+          chartOptions3: {
+            labels: ['รายรับ', 'ทบ.', 'อื่น'],
+            title: {
+              text: 'ภาพรวม งบประมาณโครงการ',
+              align: 'left'
+            },
+            responsive: [{
+              breakpoint: 480,
+              options: {
+                chart: {
+                  width: 200
+                },
+                legend: {
+                  position: 'bottom'
+                }
+              }
+            }]
           }
         }
+      },
+      methods: {
+        async getTask() {
+          try {
+            this.budgetTypes = [0, 0, 0]
+            let finish = 0
+            const response = await axios.get('http://localhost:3000/api/tasks/?year=' + this.year + '&tsk_flag=1')
+            this.tasks = response.data
+            this.tasks.forEach(element => {
+              if (element.tsk_process_status === 3) {
+                finish += 1
+              }
+              this.budgetTypes[(element.budget_details[0].budget_flag) - 1] += 1
+            })
+            this.success[0] = (finish / this.tasks.length) * 100
+          } catch (error) {
+            console.log(error)
+          }
+        },
+        async getActivities() {
+          try {
+            const response = await axios.get('http://localhost:3000/api/tasks/?year=' + this.year + '&tsk_flag=2')
+            this.activities = response.data
+          } catch (error) {
+            console.log(error)
+          }
+        },
+        async getHistory() {
+          try {
+            const response = await axios.get('http://localhost:3000/api/tasks/history')
+            for (let i = 0; i < response.data.length; i++) {
+              this.series[0].data.push(response.data[i].count)
+            }
+          } catch (error) {
+            console.log(error)
+          }
+        }
+      },
+      created() {
+        this.getHistory()
+        this.getTask()
+        this.getActivities()
       }
     })
   </script>

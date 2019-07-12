@@ -124,6 +124,8 @@ const taskType = sequelize.define('task_type', {
 Task.hasMany(budgetDetail, { foreignKey: 'tsk_id' })
 budgetDetail.belongsTo(Task, { foreignKey: 'tsk_id' })
 
+taskType.hasMany(Task, { foreignKey: 'task_type_id' })
+Task.belongsTo(taskType, { foreignKey: 'task_type_id' })
 // Task.hasOne(taskType, { foreignKey: { name: 'task_type_id' }, sourceKey: 'task_type_id' })
 // taskType.belongsTo(Task, { foreignKey: { name: 'task_type_id' }, targetKey: 'task_type_id' })
 

@@ -14,6 +14,9 @@ exports.getTasks = async (req, res, next) => {
                 attributes: ['budget_flag'],
                 where: { budget_detail_status: 1 },
                 required: false
+            }, {
+                model: taskType,
+                attributes: ['task_type_id', 'task_type_name']
             }]
         })
         res.status(200).send(tasks)
