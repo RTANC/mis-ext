@@ -76,6 +76,12 @@
                       <v-flex xs12 sm6 md6>
                         <apexchart type=pie width=380 :options="chartOptions3" :series="budgetTypes" />
                       </v-flex>
+                      <v-flex xs12 sm6 md6>
+                        <apexchart type=pie width=480 :options="chartOptions4" :series="series4" />
+                      </v-flex>
+                      <v-flex xs12>
+                        <apexchart type=bar width=100% :options="chartOptions5" :series="series5"/>
+                      </v-flex>
                       <v-flex xs12>
                         <v-data-table :headers="headers" :items="tasks" class="elevation-1">
                           <template slot="items" slot-scope="props">
@@ -83,9 +89,10 @@
                               <td>{{ props.item.tsk_name }}</td>
                               <td class="text-xs-right">{{ processStatus[(props.item.tsk_process_status)-1] }}</td>
                               <td class="text-xs-right">
-                                <v-btn flat icon color="info">
-                                <v-icon>search</v-icon>
-                              </v-btn></td>
+                                <v-btn flat icon color="info" @click="findActivities(props.item.tsk_id);">
+                                  <v-icon>search</v-icon>
+                                </v-btn>
+                              </td>
                             </tr>
                           </template>
                         </v-data-table>
@@ -112,7 +119,9 @@
       components: { 'apexchart': VueApexCharts },
       data() {
         return {
+          dialog: false,
           processStatus: ['ขออนุมัติ', 'กำลังดำเนินการ', 'เสร็จสิ้น'],
+          taskTypes: [],
           headers: [{
             text: 'ชื่อโครงการ',
             align: 'center',
@@ -171,8 +180,8 @@
                 opacity: 0.5
               },
             },
-            xaxis: {
-              categories: [2555, 2556, 2557, 2558, 2560],
+            markers: {
+              size: 6
             }
           },
           budgetTypes: [0, 0, 0],
@@ -181,24 +190,33 @@
             title: {
               text: 'ภาพรวม งบประมาณโครงการ',
               align: 'left'
-            },
-            responsive: [{
-              breakpoint: 480,
-              options: {
-                chart: {
-                  width: 200
-                },
-                legend: {
-                  position: 'bottom'
-                }
+            }
+          },
+          series4: [],
+          chartOptions4: {
+            labels: [],
+            title: {
+              text: 'ภาพรวม ด้านของโครงการ',
+              align: 'left'
+            }
+          },
+          series5: [{data: []}],
+          chartOptions5: {
+            plotOptions: {
+              bar: {
+                horizontal: true,
               }
-            }]
+            },
+            xaxis: {
+              categories: []
+            }
           }
         }
       },
       methods: {
         async getTask() {
           try {
+            this.taskTypes = Array.from({ length: 10 }, () => ({ count: 0, text: '' }))
             this.budgetTypes = [0, 0, 0]
             let finish = 0
             const response = await axios.get('http://localhost:3000/api/tasks/?year=' + this.year + '&tsk_flag=1')
@@ -207,12 +225,23 @@
               if (element.tsk_process_status === 3) {
                 finish += 1
               }
+              this.taskTypes[element.task_type.task_type_id].count += 1
+              this.taskTypes[element.task_type.task_type_id].text = element.task_type.task_type_name
               this.budgetTypes[(element.budget_details[0].budget_flag) - 1] += 1
             })
+            this.getTaskTypes()
             this.success[0] = (finish / this.tasks.length) * 100
           } catch (error) {
             console.log(error)
           }
+        },
+        getTaskTypes() {
+          this.taskTypes.forEach(val => {
+            if (val.count !== 0) {
+              this.chartOptions4.labels.push(val.text)
+              this.series4.push(val.count)
+            }
+          })
         },
         async getActivities() {
           try {
@@ -225,12 +254,25 @@
         async getHistory() {
           try {
             const response = await axios.get('http://localhost:3000/api/tasks/history')
-            for (let i = 0; i < response.data.length; i++) {
-              this.series[0].data.push(response.data[i].count)
-            }
+            response.data.forEach(val => {
+              this.series[0].data.push({ x: val.tsk_year.toString(), y: val.count })
+            })
           } catch (error) {
             console.log(error)
           }
+        },
+        findActivities(tsk_id) {
+          this.clear()
+          this.series5[0].data = []
+          this.activities.forEach(val => {
+            if (val.tsk_parent === tsk_id) {
+              this.chartOptions5.xaxis.categories.push(val.tsk_name)
+              this.series5[0].data.push(Math.round((val.tsk_process_status / 3) * 100))
+            }
+          })
+        },
+        clear () {
+          this.chartOptions5.xaxis.categories.length = 0
         }
       },
       created() {

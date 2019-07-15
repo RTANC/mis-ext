@@ -4,7 +4,7 @@ const { Task, budgetDetail, taskType } = require('../../models')
 exports.getTasks = async (req, res, next) => {
     try {
         const tasks = await Task.findAll({
-            attributes: ['tsk_id', 'tsk_name', 'tsk_flag', 'tsk_process_status', 'task_type_id'],
+            attributes: ['tsk_id', 'tsk_name', 'tsk_flag', 'tsk_process_status', 'task_type_id', 'tsk_parent'],
             where: {
                 tsk_year: req.query.year,
                 tsk_flag: req.query.tsk_flag
