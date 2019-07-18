@@ -40,7 +40,7 @@
                   <v-container grid-list-md fluid fill-height>
                     <v-layout row wrap>
                       <v-flex xs12 sm6 md6>
-                        <v-select :items="years" v-model="year" label="ปีงบประมาณ"></v-select>
+                        <v-select :items="years" v-model="year" label="ปีงบประมาณ" @change="getTask();getActivities();"></v-select>
                       </v-flex>
                       <v-flex xs12 sm6 md6>
                         <v-list dense>
@@ -80,7 +80,7 @@
                         <apexchart type=pie width=480 :options="chartOptions4" :series="series4" />
                       </v-flex>
                       <v-flex xs12>
-                        <apexchart type=bar width=100% :options="chartOptions5" :series="series5"/>
+                        <!-- <apexchart type=bar width=100% :options="chartOptions5" :series="series5"/> -->
                       </v-flex>
                       <v-flex xs12>
                         <v-data-table :headers="headers" :items="tasks" class="elevation-1">
@@ -103,6 +103,21 @@
               </v-card>
             </v-flex>
           </v-layout>
+          <v-dialog v-model="dialog" scrollable fullscreen persistent overlay max-width="500px"
+            transition="dialog-transition">
+            <v-card>
+              <v-toolbar dark color="green darken-4">
+                <v-toolbar-title>ความก้าวหน้ากิจจกรม (%)</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-btn flat icon @click="clear">
+                  <v-icon>close</v-icon>
+                </v-btn>
+              </v-toolbar>
+              <v-card-text>
+                <apexchart type=bar width=100% :options="chartOptions5" :series="series5" />
+              </v-card-text>
+            </v-card>
+          </v-dialog>
         </v-container>
       </v-content>
     </v-app>
@@ -139,7 +154,7 @@
             value: 'tsk_detail'
           }],
           years: [2562, 2561, 2560, 2559, 2558, 2557, 2556, 2555],
-          year: 2557,
+          year: 2556,
           activities: [],
           tasks: [],
           success: [0],
@@ -184,7 +199,7 @@
               size: 6
             }
           },
-          budgetTypes: [0, 0, 0],
+          budgetTypes: [],
           chartOptions3: {
             labels: ['รายรับ', 'ทบ.', 'อื่น'],
             title: {
@@ -200,7 +215,7 @@
               align: 'left'
             }
           },
-          series5: [{data: []}],
+          series5: [{ data: [] }],
           chartOptions5: {
             plotOptions: {
               bar: {
@@ -209,6 +224,17 @@
             },
             xaxis: {
               categories: []
+            },
+            noData: {
+              text: 'ไม่พบข้อมูลกิจกรรม',
+              align: 'center',
+              verticalAlign: 'middle',
+              offsetX: 0,
+              offsetY: 0,
+              style: {
+                color: 'red',
+                fontSize: '20px'
+              }
             }
           }
         }
@@ -217,7 +243,7 @@
         async getTask() {
           try {
             this.taskTypes = Array.from({ length: 10 }, () => ({ count: 0, text: '' }))
-            this.budgetTypes = [0, 0, 0]
+            let budget = [0, 0, 0]
             let finish = 0
             const response = await axios.get('http://localhost:3000/api/tasks/?year=' + this.year + '&tsk_flag=1')
             this.tasks = response.data
@@ -227,15 +253,28 @@
               }
               this.taskTypes[element.task_type.task_type_id].count += 1
               this.taskTypes[element.task_type.task_type_id].text = element.task_type.task_type_name
-              this.budgetTypes[(element.budget_details[0].budget_flag) - 1] += 1
+              if (element.budget_details.length > 0) {
+                budget[(element.budget_details[0].budget_flag) - 1] += 1
+              }
             })
-            this.getTaskTypes()
-            this.success[0] = (finish / this.tasks.length) * 100
+            this.budgetTypes = budget
+            if (this.tasks.length === 0) { // no data
+              this.success[0] = 0
+              this.chartOptions4.labels.length = 0
+              this.series4.length = 0
+              this.chartOptions4.labels.push('ไม่พบข้อมูลโครงการ')
+              this.series4.push(0)
+            } else {
+              this.success = [(finish / this.tasks.length) * 100]
+              this.getTaskTypes()
+            }
           } catch (error) {
             console.log(error)
           }
         },
         getTaskTypes() {
+          this.chartOptions4.labels.length = 0
+          this.series4.length = 0
           this.taskTypes.forEach(val => {
             if (val.count !== 0) {
               this.chartOptions4.labels.push(val.text)
@@ -270,9 +309,11 @@
               this.series5[0].data.push(Math.round((val.tsk_process_status / 3) * 100))
             }
           })
+          this.dialog = true
         },
-        clear () {
+        clear() {
           this.chartOptions5.xaxis.categories.length = 0
+          this.dialog = false
         }
       },
       created() {
