@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-
+const Op = Sequelize.Op
 const sequelize = new Sequelize('armynurse_real3', 'sa', 'Intell1', {
   host: '192.168.100.10',
   dialect: 'mssql',
@@ -12,6 +12,42 @@ const sequelize = new Sequelize('armynurse_real3', 'sa', 'Intell1', {
   define: {
     timestamps: false,
     freezeTableName: true
+  },
+  operatorsAliases: {
+    $eq: Op.eq,
+    $ne: Op.ne,
+    $gte: Op.gte,
+    $gt: Op.gt,
+    $lte: Op.lte,
+    $lt: Op.lt,
+    $not: Op.not,
+    $in: Op.in,
+    $notIn: Op.notIn,
+    $is: Op.is,
+    $like: Op.like,
+    $notLike: Op.notLike,
+    $iLike: Op.iLike,
+    $notILike: Op.notILike,
+    $regexp: Op.regexp,
+    $notRegexp: Op.notRegexp,
+    $iRegexp: Op.iRegexp,
+    $notIRegexp: Op.notIRegexp,
+    $between: Op.between,
+    $notBetween: Op.notBetween,
+    $overlap: Op.overlap,
+    $contains: Op.contains,
+    $contained: Op.contained,
+    $adjacent: Op.adjacent,
+    $strictLeft: Op.strictLeft,
+    $strictRight: Op.strictRight,
+    $noExtendRight: Op.noExtendRight,
+    $noExtendLeft: Op.noExtendLeft,
+    $and: Op.and,
+    $or: Op.or,
+    $any: Op.any,
+    $all: Op.all,
+    $values: Op.values,
+    $col: Op.col
   }
 })
 
@@ -104,7 +140,7 @@ const taskType = sequelize.define('task_type', {
   delete_date: { type: Sequelize.DATE, allowNull: true }
 })
 
-const person = sequelize.define('person', {
+const Person = sequelize.define('person', {
   person_id: { type: Sequelize.NUMERIC(18, 0), primaryKey: true, autoIncrement: true },
   rank_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
   corps_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
@@ -135,8 +171,8 @@ const person = sequelize.define('person', {
   complexion: { type: Sequelize.CHAR(200), allowNull: true },
   appearance: { type: Sequelize.CHAR(200), allowNull: true },
   mark: { type: Sequelize.CHAR(200), allowNull: true },
-  teacher_flag: { type: Sequelize.INTEGER, allowNull: true },
-  person_status: { type: Sequelize.INTEGER, allowNull: true },
+  teacher_flag: { type: Sequelize.INTEGER, allowNull: true },// 0 = ไม่มี ชม. สอน, 1 มี ชม. สอน
+  person_status: { type: Sequelize.INTEGER, allowNull: true }, // 1 = รับราชการ วพบ.
   create_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
   create_by_name: { type: Sequelize.CHAR(200), allowNull: true },
   create_date: { type: Sequelize.DATE, allowNull: true },
@@ -180,4 +216,4 @@ Task.belongsTo(taskType, { foreignKey: 'task_type_id' })
 // Question.belongsTo(Topic, { foreignKey: 'topicId', onDelete: 'cascade' })
 
 
-module.exports = { Task, budgetDetail, taskType, person }
+module.exports = { Task, budgetDetail, taskType, Person }
