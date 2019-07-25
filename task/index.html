@@ -3,6 +3,7 @@
 
 <head>
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
   <title>MIS</title>
@@ -19,15 +20,11 @@
 <body>
   <div id="app">
     <v-app>
-      <v-toolbar app dark>
+      <v-app-bar app dark>
         <v-toolbar-title class="headline text-uppercase">
           <span class="font-weight-light"> ระบบสารสนเทศเพื่อการตัดสินใจ</span>
         </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-
-        </v-toolbar-items>
-      </v-toolbar>
+      </v-app-bar>
       <v-content>
         <v-container grid-list-md fluid fill-height>
           <v-layout row wrap>
@@ -44,27 +41,27 @@
                       </v-flex>
                       <v-flex xs12 sm6 md6>
                         <v-list dense>
-                          <v-list-tile>
-                            <v-list-tile-action>
+                          <v-list-item>
+                            <v-list-item-action>
                               <v-icon color="info">label</v-icon>
-                            </v-list-tile-action>
-                            <v-list-tile-content>จำนวนโครงการ:</v-list-tile-content>
-                            <v-list-tile-content class="align-end">{{ tasks.length }}</v-list-tile-content>
-                          </v-list-tile>
-                          <v-list-tile>
-                            <v-list-tile-action>
+                            </v-list-item-action>
+                            <v-list-item-content>จำนวนโครงการ:</v-list-item-content>
+                            <v-list-item-content class="align-end">{{ tasks.length }}</v-list-item-content>
+                          </v-list-item>
+                          <v-list-item>
+                            <v-list-item-action>
                               <v-icon color="info">label</v-icon>
-                            </v-list-tile-action>
-                            <v-list-tile-content>จำนวนกิจกรรม:</v-list-tile-content>
-                            <v-list-tile-content class="align-end">{{ activities.length }}</v-list-tile-content>
-                          </v-list-tile>
-                          <v-list-tile>
-                            <v-list-tile-action>
+                            </v-list-item-action>
+                            <v-list-item-content>จำนวนกิจกรรม:</v-list-item-content>
+                            <v-list-item-content class="align-end">{{ activities.length }}</v-list-item-content>
+                          </v-list-item>
+                          <v-list-item>
+                            <v-list-item-action>
                               <v-icon color="info">label</v-icon>
-                            </v-list-tile-action>
-                            <v-list-tile-content>ความสำเร็จโครงการ ( % ):</v-list-tile-content>
-                            <v-list-tile-content class="align-end">{{ success[0] }}</v-list-tile-content>
-                          </v-list-tile>
+                            </v-list-item-action>
+                            <v-list-item-content>ความสำเร็จโครงการ ( % ):</v-list-item-content>
+                            <v-list-item-content class="align-end">{{ success[0] }}</v-list-item-content>
+                          </v-list-item>
                         </v-list>
                       </v-flex>
                       <v-flex xs12 sm6 md6>
@@ -131,6 +128,7 @@
   <script>
     new Vue({
       el: '#app',
+      vuetify: new Vuetify(),
       components: { 'apexchart': VueApexCharts },
       data() {
         return {

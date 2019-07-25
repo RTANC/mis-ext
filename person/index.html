@@ -3,6 +3,7 @@
 
 <head>
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
   <title>MIS</title>
@@ -19,15 +20,11 @@
 <body>
   <div id="app">
     <v-app>
-      <v-toolbar app dark>
+      <v-app-bar app dark>
         <v-toolbar-title class="headline text-uppercase">
           <span class="font-weight-light"> ระบบสารสนเทศเพื่อการตัดสินใจ</span>
         </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-toolbar-items>
-
-        </v-toolbar-items>
-      </v-toolbar>
+      </v-app-bar>
       <v-content>
         <v-container grid-list-md fluid fill-height>
           <v-layout row wrap>
@@ -42,8 +39,14 @@
                       <v-flex xs12>
                         <v-select :items="years" v-model="year" label="ปีงบประมาณ" @change="getRetire"></v-select>
                       </v-flex>
-                      <v-flex xs12 sm6 md6>
-                        <apexchart type=pie width=380 :options="chartOptions" :series="retireInYear" />
+                      <v-flex xs12 sm4 md4>
+                        <apexchart type=pie width=380 :options="chartOptions1" :series="retireInYear" />
+                      </v-flex>
+                      <v-flex xs12 sm4 md4>
+                        <apexchart type=pie width=380 :options="chartOptions2" :series="retireFiveYear" />
+                      </v-flex>
+                      <v-flex xs12 sm4 md4>
+                        <apexchart type=pie width=380 :options="chartOptions3" :series="retireTenYear" />
                       </v-flex>
                     </v-layout>
                   </v-container>
@@ -64,6 +67,7 @@
   <script>
     new Vue({
       el: '#app',
+      vuetify: new Vuetify(),
       components: { 'apexchart': VueApexCharts },
       data() {
         return {
@@ -73,8 +77,48 @@
           retireInYear: [0, 0],
           retireFiveYear: [0, 0],
           retireTenYear: [0, 0],
-          chartOptions: {
+          chartOptions1: {
             labels: ['ผู้บริหาร/อาจารย์', 'บุคลากรสายสนับสนุน'],
+            title: {
+              text: 'ภาพรวม บุคลากรที่เกษียณอายุราชการ ในปีงบประมาณนี้',
+              align: 'left'
+            },
+            responsive: [{
+              breakpoint: 480,
+              options: {
+                chart: {
+                  width: 200
+                },
+                legend: {
+                  position: 'bottom'
+                }
+              }
+            }]
+          },
+          chartOptions2: {
+            labels: ['ผู้บริหาร/อาจารย์', 'บุคลากรสายสนับสนุน'],
+            title: {
+              text: 'ภาพรวม บุคลากรที่เกษียณอายุราชการ ในอีก 5 ปี',
+              align: 'left'
+            },
+            responsive: [{
+              breakpoint: 480,
+              options: {
+                chart: {
+                  width: 200
+                },
+                legend: {
+                  position: 'bottom'
+                }
+              }
+            }]
+          },
+          chartOptions3: {
+            labels: ['ผู้บริหาร/อาจารย์', 'บุคลากรสายสนับสนุน'],
+            title: {
+              text: 'ภาพรวม บุคลากรที่เกษียณอายุราชการ ในอีก 10 ปี',
+              align: 'left'
+            },
             responsive: [{
               breakpoint: 480,
               options: {
