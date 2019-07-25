@@ -134,6 +134,7 @@
       components: { 'apexchart': VueApexCharts },
       data() {
         return {
+          BASE_URL: 'http://localhost:3000/api',
           dialog: false,
           processStatus: ['ขออนุมัติ', 'กำลังดำเนินการ', 'เสร็จสิ้น'],
           taskTypes: [],
@@ -245,7 +246,7 @@
             this.taskTypes = Array.from({ length: 10 }, () => ({ count: 0, text: '' }))
             let budget = [0, 0, 0]
             let finish = 0
-            const response = await axios.get('http://localhost:3000/api/tasks/?year=' + this.year + '&tsk_flag=1')
+            const response = await axios.get(this.BASE_URL + '/tasks/?year=' + this.year + '&tsk_flag=1')
             this.tasks = response.data
             this.tasks.forEach(element => {
               if (element.tsk_process_status === 3) {
@@ -284,7 +285,7 @@
         },
         async getActivities() {
           try {
-            const response = await axios.get('http://localhost:3000/api/tasks/?year=' + this.year + '&tsk_flag=2')
+            const response = await axios.get(this.BASE_URL + '/tasks/?year=' + this.year + '&tsk_flag=2')
             this.activities = response.data
           } catch (error) {
             console.log(error)
@@ -292,7 +293,7 @@
         },
         async getHistory() {
           try {
-            const response = await axios.get('http://localhost:3000/api/tasks/history')
+            const response = await axios.get(this.BASE_URL + '/tasks/history')
             response.data.forEach(val => {
               this.series[0].data.push({ x: val.tsk_year.toString(), y: val.count })
             })
