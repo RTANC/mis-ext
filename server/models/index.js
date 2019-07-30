@@ -184,6 +184,26 @@ const Person = sequelize.define('person', {
   delete_date: { type: Sequelize.DATE, allowNull: true }
 })
 
+const personLicense = sequelize.define('person_license', {
+  person_license_id: { type: Sequelize.NUMERIC(18, 0), primaryKey: true, autoIncrement: true },
+  person_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  person_name: { type: Sequelize.CHAR(200), allowNull: true },
+  profession_license_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  license_no: { type: Sequelize.CHAR(100), allowNull: true },
+  license_date: { type: Sequelize.DATE, allowNull: true },
+  expire_date: { type: Sequelize.DATE, allowNull: true },
+  person_license_status: { type: Sequelize.INTEGER, allowNull: true },
+  create_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  create_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  create_date: { type: Sequelize.DATE, allowNull: true },
+  update_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  update_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  update_date: { type: Sequelize.DATE, allowNull: true },
+  delete_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  delete_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  delete_date: { type: Sequelize.DATE, allowNull: true }
+})
+
 // const Topic = sequelize.define('topics', {
 //     topicId: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
 //     name: { type: Sequelize.STRING, allowNull: false }
@@ -206,6 +226,9 @@ budgetDetail.belongsTo(Task, { foreignKey: 'tsk_id' })
 
 taskType.hasMany(Task, { foreignKey: 'task_type_id' })
 Task.belongsTo(taskType, { foreignKey: 'task_type_id' })
+
+Person.hasMany(personLicense, { foreignKey: 'person_id' })
+personLicense.belongsTo(Person, { foreignKey: 'person_id' })
 // Task.hasOne(taskType, { foreignKey: { name: 'task_type_id' }, sourceKey: 'task_type_id' })
 // taskType.belongsTo(Task, { foreignKey: { name: 'task_type_id' }, targetKey: 'task_type_id' })
 
@@ -216,4 +239,4 @@ Task.belongsTo(taskType, { foreignKey: 'task_type_id' })
 // Question.belongsTo(Topic, { foreignKey: 'topicId', onDelete: 'cascade' })
 
 
-module.exports = { Task, budgetDetail, taskType, Person }
+module.exports = { Task, budgetDetail, taskType, Person, personLicense }

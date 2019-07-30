@@ -47,7 +47,7 @@ exports.getRetire = async (req, res, next) => {
             }
         })
 
-        endDate = moment((parseInt(req.query.year) - 598) + '-09-30').format()
+        endDate = moment((parseInt(req.query.year) - 599) + '-09-30').format()
         result.fiveYears[0] = await Person.count({
             where: {
                 birthday: {
@@ -85,7 +85,7 @@ exports.getRetire = async (req, res, next) => {
             }
         })
 
-        endDate = moment((parseInt(req.query.year) - 593) + '-09-30').format()
+        endDate = moment((parseInt(req.query.year) - 594) + '-09-30').format()
         result.tenYears[0] = await Person.count({
             where: {
                 birthday: {
