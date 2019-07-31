@@ -204,6 +204,24 @@ const personLicense = sequelize.define('person_license', {
   delete_date: { type: Sequelize.DATE, allowNull: true }
 })
 
+const Rank = sequelize.define('rank', {
+  rank_id: { type: Sequelize.NUMERIC(18, 0), primaryKey: true, autoIncrement: true },
+  rank_type: { type: Sequelize.INTEGER, allowNull: true },
+  rank_name: { type: Sequelize.CHAR(100), allowNull: true },
+  rank_abbr: { type: Sequelize.CHAR(50), allowNull: true },
+  rank_order: { type: Sequelize.INTEGER, allowNull: true },
+  rank_status: { type: Sequelize.INTEGER, allowNull: true },
+  create_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  create_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  create_date: { type: Sequelize.DATE, allowNull: true },
+  update_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  update_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  update_date: { type: Sequelize.DATE, allowNull: true },
+  delete_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  delete_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  delete_date: { type: Sequelize.DATE, allowNull: true }
+})
+
 // const Topic = sequelize.define('topics', {
 //     topicId: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
 //     name: { type: Sequelize.STRING, allowNull: false }
@@ -229,6 +247,9 @@ Task.belongsTo(taskType, { foreignKey: 'task_type_id' })
 
 Person.hasMany(personLicense, { foreignKey: 'person_id' })
 personLicense.belongsTo(Person, { foreignKey: 'person_id' })
+
+Rank.hasMany(Person, { foreignKey: 'rank_id' })
+Person.belongsTo(Rank, { foreignKey: 'rank_id' })
 // Task.hasOne(taskType, { foreignKey: { name: 'task_type_id' }, sourceKey: 'task_type_id' })
 // taskType.belongsTo(Task, { foreignKey: { name: 'task_type_id' }, targetKey: 'task_type_id' })
 
@@ -239,4 +260,4 @@ personLicense.belongsTo(Person, { foreignKey: 'person_id' })
 // Question.belongsTo(Topic, { foreignKey: 'topicId', onDelete: 'cascade' })
 
 
-module.exports = { Task, budgetDetail, taskType, Person, personLicense }
+module.exports = { Task, budgetDetail, taskType, Person, personLicense, Rank }
