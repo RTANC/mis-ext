@@ -26,12 +26,12 @@
         </v-toolbar-title>
       </v-app-bar>
       <v-content>
-        <v-container grid-list-md fluid fill-height>
+        <v-container grid-list-md fluid>
           <v-layout row wrap>
             <v-flex xs12>
               <v-card>
                 <v-card-title primary-title class="title">
-                  ภาพรวมโครงการ
+                  ภาพรวมบุคลากรเกษียณอายุ
                 </v-card-title>
                 <v-card-text>
                   <v-container grid-list-md fluid fill-height>
@@ -48,6 +48,181 @@
                       <v-flex xs12 sm4 md4>
                         <apexchart type=pie width=380 :options="chartOptions3" :series="retireTenYear" />
                       </v-flex>
+                      <v-flex xs12>
+                        <v-tabs v-model="tab" left dark>
+                          <v-tabs-slider></v-tabs-slider>
+
+                          <v-tab :value="1">
+                            ปีงบประมาณ {{year}}
+                          </v-tab>
+
+                          <v-tab :value="2">
+                            ภายในอีก 5 ปี
+                          </v-tab>
+
+                          <v-tab :value="3">
+                            ภายในอีก 10 ปี
+                          </v-tab>
+                        </v-tabs>
+                        <v-window v-model="tab" class="elevation-1">
+                            <v-window-item>
+                                <v-card flat>
+                                    <v-card-text>
+                                      <v-container grid-list-md>
+                                        <v-layout row wrap>
+                                          <v-flex xs12 sm6 md6>
+                                            <table>
+                                              <thead>
+                                                <tr>
+                                                  <th>รายชื่อบุคลากรที่เกษียณอายุราชการในปีงบประมาณ {{year}}</th>
+                                                </tr>
+                                                <tr>
+                                                  <th>ผู้บริหาร/อาจารย์</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <template v-for="val in retireInYearList.teachers">
+                                                  <tr :key="val.person_id">
+                                                    <td>
+                                                      {{(val.gender === 2) ? val.rank.rank_abbr + 'หญิง ' + val.person_name + ' ' + val.person_surname : val.rank.rank_abbr + ' ' + val.person_name + ' ' + val.person_surname}}
+                                                    </td>
+                                                  </tr>
+                                                </template>
+                                              </tbody>
+                                            </table>
+                                          </v-flex>
+                                          <v-flex xs12 sm6 md6>
+                                            <table>
+                                              <thead>
+                                                <tr>
+                                                  <th>รายชื่อบุคลากรที่เกษียณอายุราชการในปีงบประมาณ {{year}}</th>
+                                                </tr>
+                                                <tr>
+                                                  <th>บุคลากรสายสนับสนุน</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <template v-for="val in retireInYearList.supports">
+                                                  <tr :key="val.person_id">
+                                                    <td>
+                                                      {{(val.gender === 2) ? val.rank.rank_abbr + 'หญิง ' + val.person_name + ' ' + val.person_surname : val.rank.rank_abbr + ' ' + val.person_name + ' ' + val.person_surname}}
+                                                    </td>
+                                                  </tr>
+                                                </template>
+                                              </tbody>
+                                            </table>
+                                          </v-flex>
+                                        </v-layout>
+                                      </v-container>
+                                    </v-card-text>
+                                  </v-card>
+                            </v-window-item>
+                            <v-window-item>
+                                <v-card flat>
+                                    <v-card-text>
+                                      <v-container grid-list-md>
+                                        <v-layout row wrap>
+                                          <v-flex xs12 sm6 md6>
+                                            <table>
+                                              <thead>
+                                                <tr>
+                                                  <th>รายชื่อบุคลากรที่เกษียณอายุราชการภายในอีก 5 ปี</th>
+                                                </tr>
+                                                <tr>
+                                                  <th>ผู้บริหาร/อาจารย์</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <template v-for="val in retireFiveYearList.teachers">
+                                                  <tr :key="val.person_id">
+                                                    <td>
+                                                      {{(val.gender === 2) ? val.rank.rank_abbr + 'หญิง ' + val.person_name + ' ' + val.person_surname : val.rank.rank_abbr + ' ' + val.person_name + ' ' + val.person_surname}}
+                                                    </td>
+                                                  </tr>
+                                                </template>
+                                              </tbody>
+                                            </table>
+                                          </v-flex>
+                                          <v-flex xs12 sm6 md6>
+                                            <table>
+                                              <thead>
+                                                <tr>
+                                                  <th>รายชื่อบุคลากรที่เกษียณอายุราชการภายในอีก 5 ปี</th>
+                                                </tr>
+                                                <tr>
+                                                  <th>บุคลากรสายสนับสนุน</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <template v-for="val in retireFiveYearList.supports">
+                                                  <tr :key="val.person_id">
+                                                    <td>
+                                                      {{(val.gender === 2) ? val.rank.rank_abbr + 'หญิง ' + val.person_name + ' ' + val.person_surname : val.rank.rank_abbr + ' ' + val.person_name + ' ' + val.person_surname}}
+                                                    </td>
+                                                  </tr>
+                                                </template>
+                                              </tbody>
+                                            </table>
+                                          </v-flex>
+                                        </v-layout>
+                                      </v-container>
+                                    </v-card-text>
+                                  </v-card>
+                            </v-window-item>
+                            <v-window-item>
+                                <v-card flat>
+                                    <v-card-text>
+                                      <v-container grid-list-md>
+                                        <v-layout row wrap>
+                                          <v-flex xs12 sm6 md6>
+                                            <table>
+                                              <thead>
+                                                <tr>
+                                                  <th>รายชื่อบุคลากรที่เกษียณอายุราชการภายในอีก 10 ปี</th>
+                                                </tr>
+                                                <tr>
+                                                  <th>ผู้บริหาร/อาจารย์</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <template v-for="val in retireTenYearList.teachers">
+                                                  <tr :key="val.person_id">
+                                                    <td>
+                                                      {{(val.gender === 2) ? val.rank.rank_abbr + 'หญิง ' + val.person_name + ' ' + val.person_surname : val.rank.rank_abbr + ' ' + val.person_name + ' ' + val.person_surname}}
+                                                    </td>
+                                                  </tr>
+                                                </template>
+                                              </tbody>
+                                            </table>
+                                          </v-flex>
+                                          <v-flex xs12 sm6 md6>
+                                            <table>
+                                              <thead>
+                                                <tr>
+                                                  <th>รายชื่อบุคลากรที่เกษียณอายุราชการภายในอีก 10 ปี</th>
+                                                </tr>
+                                                <tr>
+                                                  <th>บุคลากรสายสนับสนุน</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <template v-for="val in retireTenYearList.supports">
+                                                  <tr :key="val.person_id">
+                                                    <td>
+                                                      {{(val.gender === 2) ? val.rank.rank_abbr + 'หญิง ' + val.person_name + ' ' + val.person_surname : val.rank.rank_abbr + ' ' + val.person_name + ' ' + val.person_surname}}
+                                                    </td>
+                                                  </tr>
+                                                </template>
+                                              </tbody>
+                                            </table>
+                                          </v-flex>
+                                        </v-layout>
+                                      </v-container>
+                                    </v-card-text>
+                                  </v-card>
+                            </v-window-item>
+                        </v-window>
+                      </v-flex>
                     </v-layout>
                   </v-container>
                 </v-card-text>
@@ -60,7 +235,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue-apexcharts"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -72,11 +247,15 @@
       data() {
         return {
           BASE_URL: 'http://localhost:3000/api',
+          tab: 0,
           years: [2562, 2561, 2560, 2559],
           year: 2562,
           retireInYear: [0, 0],
+          retireInYearList: [],
           retireFiveYear: [0, 0],
+          retireFiveYearList: [],
           retireTenYear: [0, 0],
+          retireTenYearList: [],
           chartOptions1: {
             labels: ['ผู้บริหาร/อาจารย์', 'บุคลากรสายสนับสนุน'],
             title: {
@@ -134,12 +313,15 @@
         }
       },
       methods: {
-        async getRetire () {
+        async getRetire() {
           try {
             const response = await axios.get(this.BASE_URL + '/persons/retires/?year=' + this.year)
-            this.retireInYear = response.data.year,
+            this.retireInYear = response.data.year
+              this.retireInYearList = response.data.yearList
             this.retireFiveYear = response.data.fiveYears
+            this.retireFiveYearList = response.data.fiveYearList
             this.retireTenYear = response.data.tenYears
+            this.retireTenYearList = response.data.tenYearList
           } catch (error) {
             console.log(error)
           }

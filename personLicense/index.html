@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <title>MIS</title>
+  <style>
+    #app {
+      background-attachment: local;
+      background-image: url('https://raw.githubusercontent.com/RTANC/background/master/stockvault-geometric-material-design-background241062.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <v-app>
+      <v-app-bar app dark>
+        <v-toolbar-title class="headline text-uppercase">
+          <span class="font-weight-light"> ระบบสารสนเทศเพื่อการตัดสินใจ</span>
+        </v-toolbar-title>
+      </v-app-bar>
+      <v-content>
+        <v-container grid-list-md fluid>
+          <v-layout row wrap>
+            <v-flex xs12>
+              <v-card>
+                <v-card-title primary-title class="title">
+                  ภาพรวมบุคลากรที่ใบประกอบวิชาชีพหมดอายุ
+                </v-card-title>
+                <v-card-text>
+                  <v-container grid-list-md fluid fill-height>
+                    <v-layout row wrap>
+                      <v-flex xs12>
+                        <table style="width: 100%;">
+                          <thead>
+                            <tr>
+                              <th colspan="5">บุคลากรที่ใบอนุญาตหมดอายุ</th>
+                            </tr>
+                            <tr>
+                              <th>ยศ ชื่อ-สกุล</th>
+                              <th class="text-left">เลขที่ใบอนุญาต</th>
+                              <th class="text-left">วันที่ออกใบอนุญาต</th>
+                              <th class="text-left">วันที่ใบอนุญาตหมดอายุ</th>
+                              <th class="text-left">ระยะเวลาที่เหลือ</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr v-if="licenses.expired.length === 0">
+                              <td colspan="5" class="text-center red--text">ไม่พบข้อมูล</td>
+                            </tr>
+                            <template v-else v-for="(item, idx) in licenses.expired">
+                              <tr :key="idx">
+                                <td>{{item.fullname}}</td>
+                                <td>{{item.license_no}}</td>
+                                <td>{{item.license_date}}</td>
+                                <td>{{item.expire_date}}</td>
+                                <td class="text-center">{{item.dd}} เดือน</td>
+                              </tr>
+                            </template>
+                          </tbody>
+                        </table>
+                      </v-flex>
+                      <v-flex xs12>
+                        <table style="width: 100%;">
+                          <thead>
+                            <tr>
+                              <th colspan="5">บุคลากรที่ใบอนุญาตหมดอายุ ภายใน 3 เดือน</th>
+                            </tr>
+                            <tr>
+                              <th>ยศ ชื่อ-สกุล</th>
+                              <th class="text-left">เลขที่ใบอนุญาต</th>
+                              <th class="text-left">วันที่ออกใบอนุญาต</th>
+                              <th class="text-left">วันที่ใบอนุญาตหมดอายุ</th>
+                              <th class="text-left">ระยะเวลาที่เหลือ</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr v-if="licenses.three.length === 0">
+                              <td colspan="5" class="text-center red--text">ไม่พบข้อมูล</td>
+                            </tr>
+                            <template v-else v-for="(item, idx) in licenses.three">
+                              <tr :key="idx">
+                                <td>{{item.fullname}}</td>
+                                <td>{{item.license_no}}</td>
+                                <td>{{item.license_date}}</td>
+                                <td>{{item.expire_date}}</td>
+                                <td class="text-center">{{item.dd}} เดือน</td>
+                              </tr>
+                            </template>
+                          </tbody>
+                        </table>
+                      </v-flex>
+                      <v-flex xs12>
+                        <table style="width: 100%;">
+                          <thead>
+                            <tr>
+                              <th colspan="5">บุคลากรที่ใบอนุญาตหมดอายุ ภายใน 6 เดือน</th>
+                            </tr>
+                            <tr>
+                              <th>ยศ ชื่อ-สกุล</th>
+                              <th class="text-left">เลขที่ใบอนุญาต</th>
+                              <th class="text-left">วันที่ออกใบอนุญาต</th>
+                              <th class="text-left">วันที่ใบอนุญาตหมดอายุ</th>
+                              <th class="text-left">ระยะเวลาที่เหลือ</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr v-if="licenses.six.length === 0">
+                              <td colspan="5" class="text-center red--text">ไม่พบข้อมูล</td>
+                            </tr>
+                            <template v-else v-for="(item, idx) in licenses.six">
+                              <tr :key="idx">
+                                <td>{{item.fullname}}</td>
+                                <td>{{item.license_no}}</td>
+                                <td>{{item.license_date}}</td>
+                                <td>{{item.expire_date}}</td>
+                                <td class="text-center">{{item.dd}} เดือน</td>
+                              </tr>
+                            </template>
+                          </tbody>
+                        </table>
+                      </v-flex>
+                      <v-flex xs12>
+                        <table style="width: 100%;">
+                          <thead>
+                            <tr>
+                              <th colspan="5">บุคลากรที่ใบอนุญาตหมดอายุ ภายใน 9 เดือน</th>
+                            </tr>
+                            <tr>
+                              <th>ยศ ชื่อ-สกุล</th>
+                              <th class="text-left">เลขที่ใบอนุญาต</th>
+                              <th class="text-left">วันที่ออกใบอนุญาต</th>
+                              <th class="text-left">วันที่ใบอนุญาตหมดอายุ</th>
+                              <th class="text-left">ระยะเวลาที่เหลือ</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr v-if="licenses.nine.length === 0">
+                              <td colspan="5" class="text-center red--text">ไม่พบข้อมูล</td>
+                            </tr>
+                            <template v-else v-for="(item, idx) in licenses.nine">
+                              <tr :key="idx">
+                                <td>{{item.fullname}}</td>
+                                <td>{{item.license_no}}</td>
+                                <td>{{item.license_date}}</td>
+                                <td>{{item.expire_date}}</td>
+                                <td class="text-center">{{item.dd}} เดือน</td>
+                              </tr>
+                            </template>
+                          </tbody>
+                        </table>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
+                </v-card-text>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-content>
+    </v-app>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-apexcharts"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+      components: { 'apexchart': VueApexCharts },
+      data() {
+        return {
+          BASE_URL: 'http://localhost:3000/api',
+          licenses: []
+        }
+      },
+      methods: {
+        async getLicenseExpire() {
+          try {
+            const response = await axios.get(this.BASE_URL + '/persons/licenses/expires')
+            this.licenses = response.data
+          } catch (error) {
+            console.log(error)
+          }
+        }
+      },
+      created() {
+        this.getLicenseExpire()
+      }
+    })
+  </script>
+</body>
+
+</html>
