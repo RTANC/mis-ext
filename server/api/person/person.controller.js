@@ -1,6 +1,52 @@
 const sequelize = require('sequelize')
 const moment = require('moment')
-const { Person, Rank, personLicense } = require('../../models')
+const { Person, Rank, personLicense, personEducation, Major, Institution, personPosition, Position } = require('../../models')
+
+exports.getTeacher = async (req, res, next) => {
+    try {
+        const teachers = await Person.findAll({
+            attributes: ['person_name', 'person_surname', 'gender'],
+            where: {
+                person_status: 1,
+                person_type: 2,
+                person_unit_id: {
+                    $ne: 24
+                }
+            },
+            include: [{
+                model: Rank,
+                attributes: ['rank_abbr']
+            }, {
+                model: personLicense,
+                attributes: ['license_no', 'license_date', 'expire_date']
+            }, {
+                model: personEducation,
+                attributes: ['person_education_id', 'education_level', 'major_id', 'institution_id', 'nurse_flag'],
+                where: {
+                    person_education_status: 1
+                },
+                include: [{
+                    model: Major,
+                    attributes: ['major_name']
+                }, {
+                    model: Institution,
+                    attributes: ['institution_name']
+                }]
+            }, {
+                model: personPosition,
+                attributes: ['position_date'],
+                include: [{
+                    model: Position,
+                    attributes: ['position_name']
+                }]
+            }],
+            order: [[personLicense, 'license_date', 'DESC'], [personPosition, 'position_date', 'DESC']]
+        })
+        res.status(200).send(teachers)
+    } catch (error) {
+        next(error)
+    }
+}
 
 exports.getLicenseExpire = async (req, res, next) => {
     try {

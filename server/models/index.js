@@ -222,22 +222,137 @@ const Rank = sequelize.define('rank', {
   delete_date: { type: Sequelize.DATE, allowNull: true }
 })
 
-// const Topic = sequelize.define('topics', {
-//     topicId: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-//     name: { type: Sequelize.STRING, allowNull: false }
-// })
+const personEducation = sequelize.define('person_education', {
+  person_education_id: { type: Sequelize.NUMERIC(18, 0), primaryKey: true, autoIncrement: true },
+  education_level: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  edu_course_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  major_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  institution_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  country_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  person_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  person_name: { type: Sequelize.CHAR(200), allowNull: true },
+  education_year: { type: Sequelize.INTEGER, allowNull: true },
+  education_date: { type: Sequelize.DATE, allowNull: true },
+  note: { type: Sequelize.CHAR(500), allowNull: true },
+  person_education_status: { type: Sequelize.INTEGER, allowNull: true },
+  education_level_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  nurse_flag: { type: Sequelize.INTEGER, allowNull: true },
+  create_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  create_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  create_date: { type: Sequelize.DATE, allowNull: true },
+  update_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  update_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  update_date: { type: Sequelize.DATE, allowNull: true },
+  delete_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  delete_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  delete_date: { type: Sequelize.DATE, allowNull: true }
+})
 
-// const Question = sequelize.define('questions', {
-//     questionId: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-//     text: { type: Sequelize.TEXT, allowNull: false },
-//     score: { type: Sequelize.TINYINT, allowNull: false, defaultValue: 1 },
-//     answer: { type: Sequelize.TINYINT, allowNull: false },
-//     choice1: { type: Sequelize.TEXT, allowNull: false },
-//     choice2: { type: Sequelize.TEXT, allowNull: false },
-//     choice3: { type: Sequelize.TEXT, allowNull: false },
-//     choice4: { type: Sequelize.TEXT, allowNull: false },
-//     choice5: { type: Sequelize.TEXT, allowNull: true }
-// })
+const educationLevel = sequelize.define('education_level', {
+  education_level_id: { type: Sequelize.NUMERIC(18, 0), primaryKey: true, autoIncrement: true },
+  education_level_name: { type: Sequelize.CHAR(200), allowNull: true },
+  education_level_flag: { type: Sequelize.INTEGER, allowNull: true },
+  education_level_status: { type: Sequelize.INTEGER, allowNull: true },
+  create_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  create_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  create_date: { type: Sequelize.DATE, allowNull: true },
+  update_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  update_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  update_date: { type: Sequelize.DATE, allowNull: true },
+  delete_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  delete_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  delete_date: { type: Sequelize.DATE, allowNull: true }
+})
+
+const Major = sequelize.define('major', {
+  major_id: { type: Sequelize.NUMERIC(18, 0), primaryKey: true, autoIncrement: true },
+  major_name: { type: Sequelize.CHAR(500), allowNull: true },
+  major_status: { type: Sequelize.INTEGER, allowNull: true },
+  create_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  create_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  create_date: { type: Sequelize.DATE, allowNull: true },
+  update_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  update_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  update_date: { type: Sequelize.DATE, allowNull: true },
+  delete_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  delete_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  delete_date: { type: Sequelize.DATE, allowNull: true }
+})
+
+const Institution = sequelize.define('institution', {
+  institution_id: { type: Sequelize.NUMERIC(18, 0), primaryKey: true, autoIncrement: true },
+  country_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  institution_name: { type: Sequelize.CHAR(500), allowNull: true },
+  institution_status: { type: Sequelize.INTEGER, allowNull: true },
+  create_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  create_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  create_date: { type: Sequelize.DATE, allowNull: true },
+  update_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  update_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  update_date: { type: Sequelize.DATE, allowNull: true },
+  delete_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  delete_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  delete_date: { type: Sequelize.DATE, allowNull: true }
+})
+
+const personPosition = sequelize.define('person_position', {
+  person_position_id: { type: Sequelize.NUMERIC(18, 0), primaryKey: true, autoIncrement: true },
+  person_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  person_name: { type: Sequelize.CHAR(200), allowNull: true },
+  position_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  property: { type: Sequelize.CHAR(100), allowNull: true },
+  position_level: { type: Sequelize.CHAR(100), allowNull: true },
+  position_date: { type: Sequelize.DATE, allowNull: true },
+  doc_ref: { type: Sequelize.CHAR(500), allowNull: true },
+  person_position_status: { type: Sequelize.INTEGER, allowNull: true },
+  create_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  create_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  create_date: { type: Sequelize.DATE, allowNull: true },
+  update_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  update_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  update_date: { type: Sequelize.DATE, allowNull: true },
+  delete_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  delete_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  delete_date: { type: Sequelize.DATE, allowNull: true }
+})
+
+const Position = sequelize.define('position', {
+  position_id: { type: Sequelize.NUMERIC(18, 0), primaryKey: true, autoIncrement: true },
+  position_name: { type: Sequelize.CHAR(200), allowNull: true },
+  position_abbr: { type: Sequelize.CHAR(50), allowNull: true },
+  position_flag: { type: Sequelize.INTEGER, allowNull: true },
+  position_status: { type: Sequelize.INTEGER, allowNull: true },
+  create_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  create_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  create_date: { type: Sequelize.DATE, allowNull: true },
+  update_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  update_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  update_date: { type: Sequelize.DATE, allowNull: true },
+  delete_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  delete_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  delete_date: { type: Sequelize.DATE, allowNull: true }
+})
+
+const teachExp = sequelize.define('teach_experience', {
+  teach_experience_id: { type: Sequelize.NUMERIC(18, 0), primaryKey: true, autoIncrement: true },
+  person_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  person_name: { type: Sequelize.CHAR(200), allowNull: true },
+  institution_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  nurse_flag: { type: Sequelize.INTEGER, allowNull: true },
+  from_date: { type: Sequelize.DATE, allowNull: true },
+  to_date: { type: Sequelize.DATE, allowNull: true },
+  note: { type: Sequelize.CHAR(500), allowNull: true },
+  teach_experience_status: { type: Sequelize.INTEGER, allowNull: true },
+  create_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  create_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  create_date: { type: Sequelize.DATE, allowNull: true },
+  update_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  update_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  update_date: { type: Sequelize.DATE, allowNull: true },
+  delete_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  delete_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  delete_date: { type: Sequelize.DATE, allowNull: true }
+})
 
 Task.hasMany(budgetDetail, { foreignKey: 'tsk_id' })
 budgetDetail.belongsTo(Task, { foreignKey: 'tsk_id' })
@@ -250,6 +365,28 @@ personLicense.belongsTo(Person, { foreignKey: 'person_id' })
 
 Rank.hasMany(Person, { foreignKey: 'rank_id' })
 Person.belongsTo(Rank, { foreignKey: 'rank_id' })
+
+Person.hasMany(personEducation, { foreignKey: 'person_id' })
+personEducation.belongsTo(Person, { foreignKey: 'person_id' })
+
+// personEducation.hasMany(educationLevel, { foreignKey: 'education_level_id', sourceKey: 'education_level' })
+// educationLevel.belongsTo(personEducation, { foreignKey: 'education_level_id' })
+
+Major.hasOne(personEducation, { foreignKey: 'major_id' })
+personEducation.belongsTo(Major, { foreignKey: 'major_id' })
+
+Institution.hasOne(personEducation, { foreignKey: 'institution_id' })
+personEducation.belongsTo(Institution, { foreignKey: 'institution_id' })
+
+Person.hasMany(personPosition, { foreignKey: 'person_id' })
+personPosition.belongsTo(Person, { foreignKey: 'person_id' })
+
+Position.hasOne(personPosition, { foreignKey: 'position_id' })
+personPosition.belongsTo(Position, { foreignKey: 'position_id' })
+
+Person.hasMany(teachExp, { foreignKey: 'person_id' })
+teachExp.belongsTo(Person, { foreignKey: 'person_id' })
+
 // Task.hasOne(taskType, { foreignKey: { name: 'task_type_id' }, sourceKey: 'task_type_id' })
 // taskType.belongsTo(Task, { foreignKey: { name: 'task_type_id' }, targetKey: 'task_type_id' })
 
@@ -260,4 +397,4 @@ Person.belongsTo(Rank, { foreignKey: 'rank_id' })
 // Question.belongsTo(Topic, { foreignKey: 'topicId', onDelete: 'cascade' })
 
 
-module.exports = { Task, budgetDetail, taskType, Person, personLicense, Rank }
+module.exports = { Task, budgetDetail, taskType, Person, personLicense, Rank, personEducation, educationLevel, Major, Institution, personPosition, Position, teachExp }
