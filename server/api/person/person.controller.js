@@ -1,11 +1,11 @@
 const sequelize = require('sequelize')
 const moment = require('moment')
-const { Person, Rank, personLicense, personEducation, Major, Institution, personPosition, Position } = require('../../models')
+const { Person, Rank, personLicense, personEducation, Major, Institution, personPosition, Position, Research, Researcher } = require('../../models')
 
 exports.getTeacher = async (req, res, next) => {
     try {
         const teachers = await Person.findAll({
-            attributes: ['person_name', 'person_surname', 'gender'],
+            attributes: ['person_id', 'person_name', 'person_surname', 'gender', 'teacher_flag'],
             where: {
                 person_status: 1,
                 person_type: 2,
@@ -39,8 +39,18 @@ exports.getTeacher = async (req, res, next) => {
                     model: Position,
                     attributes: ['position_name']
                 }]
+            }, {
+                model: Researcher,
+                attributes: ['person_id'],
+                include: [{
+                    model: Research,
+                    attributes: ['research_id', 'research_name', 'research_flag'],
+                    where: {
+                        research_status: 1
+                    }
+                }]
             }],
-            order: [[personLicense, 'license_date', 'DESC'], [personPosition, 'position_date', 'DESC']]
+            order: [[personLicense, 'license_date', 'DESC'], [personPosition, 'position_date', 'DESC'], [personEducation, 'education_level', 'ASC']]
         })
         res.status(200).send(teachers)
     } catch (error) {

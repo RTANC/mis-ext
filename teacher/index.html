@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <title>MIS</title>
+  <style>
+    #app {
+      background-attachment: local;
+      background-image: url('https://raw.githubusercontent.com/RTANC/background/master/stockvault-geometric-material-design-background241062.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <v-app>
+      <v-app-bar app dark>
+        <v-toolbar-title class="headline text-uppercase">
+          <span class="font-weight-light"> ระบบสารสนเทศเพื่อการตัดสินใจ</span>
+        </v-toolbar-title>
+      </v-app-bar>
+      <v-content>
+        <v-container grid-list-md fluid>
+          <v-layout row wrap>
+              <v-flex xs12>
+                  <v-card>
+                      <v-card-title class="headline" primary-title>
+                          ภาพรวมอาจารย์พยาบาลประจำหลักสูตร
+                      </v-card-title>
+                      <v-card-text>
+                          <table>
+                              <thead>
+                                  <tr>
+                                      <th>ชื่อ-นามสกุล</th>
+                                      <th>ตำแหน่ง</th>
+                                      <th>ใบอนุญาตประกอบวิชาชีพ</th>
+                                      <th>ปริญญาโท</th>
+                                      <th>ปริญญาเอก</th>
+                                      <th>มีชั่วโมงการสอนวิชาทางการพยาบาล</th>
+                                      <th>ผลงานวิจัย</th>
+                                      <th>ผลงานวิชาการ</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <template>
+                                      <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                      </tr>
+                                  </template>
+                              </tbody>
+                          </table>
+                      </v-card-text>
+                  </v-card>
+              </v-flex>
+          </v-layout>
+        </v-container>
+      </v-content>
+    </v-app>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/vue-apexcharts"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+      data() {
+        return {
+        }
+      },
+      methods: {
+        async getTeacher() {
+          try {
+            const response = await axios.get(this.BASE_URL + '/persons/teachers')
+          } catch (error) {
+            console.log(error)
+          }
+        }
+      },
+      created() {
+        this.getTeacher()
+      }
+    })
+  </script>
+</body>
+
+</html>

@@ -354,6 +354,121 @@ const teachExp = sequelize.define('teach_experience', {
   delete_date: { type: Sequelize.DATE, allowNull: true }
 })
 
+const Research = sequelize.define('research', {
+  research_id: { type: Sequelize.NUMERIC(18, 0), primaryKey: true, autoIncrement: true },
+  research_flag: { type: Sequelize.INTEGER, allowNull: true },
+  paper_flag: { type: Sequelize.INTEGER, allowNull: true },
+  research_field_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  research_fund_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  research_code: { type: Sequelize.CHAR(20), allowNull: true },
+  research_name: { type: Sequelize.CHAR(300), allowNull: true },
+  e_research_name: { type: Sequelize.CHAR(300), allowNull: true },
+  fiscal_year: { type: Sequelize.INTEGER, allowNull: true },
+  start_date: { type: Sequelize.DATE, allowNull: true },
+  due_date: { type: Sequelize.DATE, allowNull: true },
+  complete_date: { type: Sequelize.DATE, allowNull: true },
+  fund_flag: { type: Sequelize.INTEGER, allowNull: true },
+  budget: { type: Sequelize.DECIMAL(12, 2), allowNull: true },
+  remain_budget: { type: Sequelize.DECIMAL(12, 2), allowNull: true },
+  research_location: { type: Sequelize.CHAR(500), allowNull: true },
+  reveal_flag: { type: Sequelize.INTEGER, allowNull: true },
+  abstract: { type: Sequelize.CHAR(5000), allowNull: true },
+  e_abstract: { type: Sequelize.CHAR(5000), allowNull: true },
+  unit_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  keyword: { type: Sequelize.CHAR(300), allowNull: true },
+  e_keyword: { type: Sequelize.CHAR(300), allowNull: true },
+  research_step: { type: Sequelize.INTEGER, allowNull: true },
+  step_status: { type: Sequelize.INTEGER, allowNull: true },
+  research_status: { type: Sequelize.INTEGER, allowNull: true },
+  academic_year: { type: Sequelize.INTEGER, allowNull: true },
+  create_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  create_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  create_date: { type: Sequelize.DATE, allowNull: true },
+  update_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  update_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  update_date: { type: Sequelize.DATE, allowNull: true },
+  delete_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  delete_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  delete_date: { type: Sequelize.DATE, allowNull: true }
+})
+
+const Researcher = sequelize.define('researcher', {
+  researcher_id: { type: Sequelize.NUMERIC(18, 0), primaryKey: true, autoIncrement: true },
+  person_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  person_name: { type: Sequelize.CHAR(200), allowNull: true },
+  research_position_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  research_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  unit_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  note: { type: Sequelize.CHAR(2000), allowNull: true },
+  researcher_status: { type: Sequelize.INTEGER, allowNull: true },
+  create_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  create_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  create_date: { type: Sequelize.DATE, allowNull: true },
+  update_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  update_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  update_date: { type: Sequelize.DATE, allowNull: true },
+  delete_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  delete_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  delete_date: { type: Sequelize.DATE, allowNull: true }
+})
+
+// const researchExp = sequelize.define('research_experience', {
+//   research_experience_id: { type: Sequelize.NUMERIC(18, 0), primaryKey: true, autoIncrement: true },
+//   person_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+//   person_name: { type: Sequelize.CHAR(200), allowNull: true },
+//   research_field_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+//   research_publisher_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+//   research_name: { type: Sequelize.CHAR(500), allowNull: true },
+//   publish_flag: { type: Sequelize.INTEGER, allowNull: true },
+//   publish_date: { type: Sequelize.DATE, allowNull: true },
+//   research_experience_status: { type: Sequelize.INTEGER, allowNull: true },
+//   create_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+//   create_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+//   create_date: { type: Sequelize.DATE, allowNull: true },
+//   update_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+//   update_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+//   update_date: { type: Sequelize.DATE, allowNull: true },
+//   delete_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+//   delete_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+//   delete_date: { type: Sequelize.DATE, allowNull: true }
+// })
+
+const researchField = sequelize.define('research_field', {
+  research_field_id: { type: Sequelize.NUMERIC(18, 0), primaryKey: true, autoIncrement: true },
+  research_field_name: { type: Sequelize.CHAR(200), allowNull: true },
+  research_field_status: { type: Sequelize.INTEGER, allowNull: true },
+  create_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  create_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  create_date: { type: Sequelize.DATE, allowNull: true },
+  update_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  update_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  update_date: { type: Sequelize.DATE, allowNull: true },
+  delete_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+  delete_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+  delete_date: { type: Sequelize.DATE, allowNull: true }
+})
+
+// const paperExp = sequelize.define('paper_experience', {
+//   paper_experience_id: { type: Sequelize.NUMERIC(18, 0), primaryKey: true, autoIncrement: true },
+//   person_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+//   person_name: { type: Sequelize.CHAR(200), allowNull: true },
+//   research_publisher_id: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+//   paper_name: { type: Sequelize.CHAR(500), allowNull: true },
+//   paper_flag: { type: Sequelize.INTEGER, allowNull: true },
+//   publish_flag: { type: Sequelize.INTEGER, allowNull: true },
+//   publish_date: { type: Sequelize.DATE, allowNull: true },
+//   paper_experience_status: { type: Sequelize.INTEGER, allowNull: true },
+//   create_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+//   create_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+//   create_date: { type: Sequelize.DATE, allowNull: true },
+//   update_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+//   update_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+//   update_date: { type: Sequelize.DATE, allowNull: true },
+//   delete_by: { type: Sequelize.NUMERIC(18, 0), allowNull: true },
+//   delete_by_name: { type: Sequelize.CHAR(200), allowNull: true },
+//   delete_date: { type: Sequelize.DATE, allowNull: true }
+// })
+
 Task.hasMany(budgetDetail, { foreignKey: 'tsk_id' })
 budgetDetail.belongsTo(Task, { foreignKey: 'tsk_id' })
 
@@ -387,14 +502,20 @@ personPosition.belongsTo(Position, { foreignKey: 'position_id' })
 Person.hasMany(teachExp, { foreignKey: 'person_id' })
 teachExp.belongsTo(Person, { foreignKey: 'person_id' })
 
-// Task.hasOne(taskType, { foreignKey: { name: 'task_type_id' }, sourceKey: 'task_type_id' })
-// taskType.belongsTo(Task, { foreignKey: { name: 'task_type_id' }, targetKey: 'task_type_id' })
+Person.hasMany(Researcher, { foreignKey: 'person_id' })
+Researcher.belongsTo(Person, { foreignKey: 'person_id' })
 
-// Subject.hasMany(Topic, { foreignKey: 'subjectId', onDelete: 'cascade'})
-// Topic.belongsTo(Subject, { foreignKey: 'subjectId', onDelete: 'cascade'})
+Research.hasMany(Researcher, { foreignKey: 'research_id' })
+Researcher.belongsTo(Research, { foreignKey: 'research_id' })
 
-// Topic.hasMany(Question, { foreignKey: 'topicId', onDelete: 'cascade' })
-// Question.belongsTo(Topic, { foreignKey: 'topicId', onDelete: 'cascade' })
+// Person.hasMany(paperExp, { foreignKey: 'person_id' })
+// paperExp.belongsTo(Person, { foreignKey: 'person_id' })
+
+// Person.hasMany(researchExp, { foreignKey: 'person_id' })
+// researchExp.belongsTo(Person, { foreignKey: 'person_id' })
+
+// researchField.hasOne(researchExp, { foreignKey: 'research_field_id' })
+// researchExp.belongsTo(researchField, { foreignKey: 'research_field_id' })
 
 
-module.exports = { Task, budgetDetail, taskType, Person, personLicense, Rank, personEducation, educationLevel, Major, Institution, personPosition, Position, teachExp }
+module.exports = { Task, budgetDetail, taskType, Person, personLicense, Rank, personEducation, educationLevel, Major, Institution, personPosition, Position, teachExp, researchField, Research, Researcher }
