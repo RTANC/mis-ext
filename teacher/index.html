@@ -14,6 +14,16 @@
       background-repeat: no-repeat;
       background-size: cover;
     }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table, th, td {
+      border: 1px solid black;
+      padding: 3px 5px 3px 5px;
+    }
   </style>
 </head>
 
@@ -28,43 +38,49 @@
       <v-content>
         <v-container grid-list-md fluid>
           <v-layout row wrap>
-              <v-flex xs12>
-                  <v-card>
-                      <v-card-title class="headline" primary-title>
-                          ภาพรวมอาจารย์พยาบาลประจำหลักสูตร
-                      </v-card-title>
-                      <v-card-text>
-                          <table>
-                              <thead>
-                                  <tr>
-                                      <th>ชื่อ-นามสกุล</th>
-                                      <th>ตำแหน่ง</th>
-                                      <th>ใบอนุญาตประกอบวิชาชีพ</th>
-                                      <th>ปริญญาโท</th>
-                                      <th>ปริญญาเอก</th>
-                                      <th>มีชั่วโมงการสอนวิชาทางการพยาบาล</th>
-                                      <th>ผลงานวิจัย</th>
-                                      <th>ผลงานวิชาการ</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <template>
-                                      <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
-                                          <td></td>
-                                      </tr>
-                                  </template>
-                              </tbody>
-                          </table>
-                      </v-card-text>
-                  </v-card>
-              </v-flex>
+            <v-flex xs12>
+              <v-card>
+                <v-card-title class="headline" primary-title>
+                  ภาพรวมอาจารย์พยาบาลประจำหลักสูตร
+                </v-card-title>
+                <v-card-text>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>ชื่อ-นามสกุล</th>
+                        <th>ตำแหน่ง</th>
+                        <th>เลขที่ใบประกอบวิชาชีพ</th>
+                        <th>ปริญญาโท</th>
+                        <th>มีชั่วโมงการสอนวิชาทางการพยาบาล</th>
+                        <th>ผลงานวิจัย</th>
+                        <th>ผลงานวิชาการ</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <template v-for="teacher in teachers">
+                        <tr>
+                          <td>
+                            {{ (teacher.gender === 2) ? teacher.rank.rank_abbr + 'หญิง ' + teacher.person_name + ' ' + teacher.person_surname : teacher.rank.rank_abbr + teacher.person_name + ' ' + teacher.person_surname }}
+                          </td>
+                          <td class="text-center">{{ generatePosition(teacher.person_positions[0]) }}</td>
+                          <td class="text-center">{{ generateLicense(teacher.person_licenses[0]) }}</td>
+                          <td>
+                            <ul>
+                              <li v-for="edu in teacher.person_educations">
+                                {{ generateEducation(edu) }}
+                              </li>
+                            </ul>
+                          </td>
+                          <td>{{ teacher.teacher_flag ===1 ? 'มีชั่วโมงสอน' : 'ไม่มีชั่วโมงสอน' }}</td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                      </template>
+                    </tbody>
+                  </table>
+                </v-card-text>
+              </v-card>
+            </v-flex>
           </v-layout>
         </v-container>
       </v-content>
@@ -82,14 +98,46 @@
       vuetify: new Vuetify(),
       data() {
         return {
+          BASE_URL: 'http://localhost:3000/api',
+          teachers: []
         }
       },
       methods: {
         async getTeacher() {
           try {
             const response = await axios.get(this.BASE_URL + '/persons/teachers')
+            this.teachers = response.data
           } catch (error) {
             console.log(error)
+          }
+        },
+        generatePosition(val) {
+          try {
+            return val.position.position_name
+          } catch (error) {
+            return 'ไม่พบข้อมูล'
+          }
+        },
+        generateLicense(val) {
+          try {
+            return val.license_no
+          } catch (error) {
+            return 'ไม่พบข้อมูล'
+          }
+        },
+        generateEducation(val) {
+          try {
+            let edu = ''
+            if (val.education_level === 1) {
+              edu += 'ปริญญาเอก'
+            } else if (val.education_level === 2) {
+              edu += 'ปริญญาโท'
+            } else if (val.education_level === 3) {
+              edu += 'ปริญญาตรี'
+            }
+            return edu += ' ' + val.major.major_name + ' ' + val.institution.institution_name
+          } catch (error) {
+            return 'ไม่พบข้อมูล'
           }
         }
       },

@@ -18,13 +18,15 @@ exports.getTeacher = async (req, res, next) => {
                 attributes: ['rank_abbr']
             }, {
                 model: personLicense,
-                attributes: ['license_no', 'license_date', 'expire_date']
+                attributes: ['license_no', 'license_date', 'expire_date'],
+                required: false
             }, {
                 model: personEducation,
                 attributes: ['person_education_id', 'education_level', 'major_id', 'institution_id', 'nurse_flag'],
                 where: {
                     person_education_status: 1
                 },
+                required: false,
                 include: [{
                     model: Major,
                     attributes: ['major_name']
@@ -38,10 +40,12 @@ exports.getTeacher = async (req, res, next) => {
                 include: [{
                     model: Position,
                     attributes: ['position_name']
-                }]
+                }],
+                required: false
             }, {
                 model: Researcher,
                 attributes: ['person_id'],
+                required: false,
                 include: [{
                     model: Research,
                     attributes: ['research_id', 'research_name', 'research_flag'],
