@@ -16,7 +16,6 @@
     }
 
     table {
-      width: 100%;
       border-collapse: collapse;
     }
 
@@ -44,7 +43,7 @@
                   ภาพรวมอาจารย์พยาบาลประจำหลักสูตร
                 </v-card-title>
                 <v-card-text>
-                  <table>
+                  <table class="w-100">
                     <thead>
                       <tr>
                         <th>ชื่อ-นามสกุล</th>
@@ -59,7 +58,7 @@
                     <tbody>
                       <template v-for="teacher in teachers">
                         <tr>
-                          <td>
+                          <td class="w-50">
                             {{ (teacher.gender === 2) ? teacher.rank.rank_abbr + 'หญิง ' + teacher.person_name + ' ' + teacher.person_surname : teacher.rank.rank_abbr + teacher.person_name + ' ' + teacher.person_surname }}
                           </td>
                           <td class="text-center">{{ generatePosition(teacher.person_positions[0]) }}</td>
@@ -71,9 +70,15 @@
                               </li>
                             </ul>
                           </td>
-                          <td>{{ teacher.teacher_flag ===1 ? 'มีชั่วโมงสอน' : 'ไม่มีชั่วโมงสอน' }}</td>
-                          <td></td>
-                          <td></td>
+                          <td class="text-center" >{{ teacher.teacher_flag ===1 ? 'มีชั่วโมงสอน' : 'ไม่มีชั่วโมงสอน' }}</td>
+                          <td class="text-center">
+                            <!-- <ol v-html="generateResearch(teacher.researchers,1)">
+                            </ol> -->
+                            {{generateResearch(teacher.researchers,1)}}
+                          </td>
+                          <td class="text-center">
+                              {{generateResearch(teacher.researchers,2)}}
+                          </td>
                         </tr>
                       </template>
                     </tbody>
@@ -136,6 +141,22 @@
               edu += 'ปริญญาตรี'
             }
             return edu += ' ' + val.major.major_name + ' ' + val.institution.institution_name
+          } catch (error) {
+            return 'ไม่พบข้อมูล'
+          }
+        },
+        generateResearch(vals, flag) {
+          try {
+            // let list = ''
+            // vals.forEach(element => {
+            //   list += (element.research.research_flag === flag) ? '<li>' + element.research.research_name + '</li>' : ''
+            // })
+            // return list
+            let count = 0
+            vals.forEach(element => {
+              count += (element.research.research_flag === flag) ? 1 : 0
+            })
+            return count
           } catch (error) {
             return 'ไม่พบข้อมูล'
           }
