@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <title>MIS</title>
+  <style>
+    #app {
+      background-attachment: local;
+      background-image: url('https://raw.githubusercontent.com/RTANC/background/master/stockvault-geometric-material-design-background241062.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table, th, td {
+      border: 1px solid black;
+      padding: 3px 10px 3px 10px;
+    }
+    img {
+        width: 100%
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <v-app>
+      <v-app-bar app dark>
+        <v-toolbar-title class="headline text-uppercase">
+          <span class="font-weight-light"> ระบบสารสนเทศเพื่อการตัดสินใจ</span>
+        </v-toolbar-title>
+      </v-app-bar>
+      <v-content>
+            <v-container grid-list-md fluid>
+                <v-layout row wrap>
+                    <v-flex xs12>
+                        <v-card>
+                            <v-card-title primary-title>
+                                ภาพรวมหลักสูตร
+                            </v-card-title>
+                            <v-card-text>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center title" colspan="3">รายละเอียดหลักสูตรที่เปิดสอน</th>
+                                        </tr>
+                                        <tr>
+                                            <th>หลักสูตร</th>
+                                            <th>รายละเอียด</th>
+                                            <th>Download เอกสารหลักสูตร</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>หลักสูตรพยาบาลศาสตรบัณฑิต หลักสูตรปรับปรุง พ.ศ. ๒๕๕๕</td>
+                                            <td><v-btn color="info" text @click.native="dialog = true;course = 0;">รายละเอียด</v-btn></td>
+                                            <td>
+                                              <v-btn color="info" link text href="https://rtanc.ac.th/wp-content/uploads/2019/08/มคอ.2-แก้ไข-14-ต.ค.55.pdf" target="_blank">เอกสารหลักสูตร (มคอ.๒)</v-btn>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>หลักสูตรพยาบาลศาสตรบัณฑิต หลักสูตรปรับปรุง พ.ศ. ๒๕๖๑</td>
+                                            <td><v-btn color="info" text @click.native="dialog = true;course = 1;">รายละเอียด</v-btn></td>
+                                            <td>
+                                                <v-btn color="info" link text target="_blank">เอกสารหลักสูตร (มคอ.๒)</v-btn>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </v-card-text>
+                        </v-card>
+                    </v-flex>
+                </v-layout>
+            </v-container>
+            <v-layout row justify-center>
+                <v-dialog v-model="dialog" max-width="900" scrollable>
+                    <v-card>
+                        <v-card-title class="headline">รายละเอียด</v-card-title>
+                        <v-card-text>
+                            <template v-for="c in courses[course]">
+                                <img :src="c">
+                            </template>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="red" text @click.native="dialog = false">ปิด</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+            </v-layout>
+      </v-content>
+    </v-app>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue-apexcharts"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      vuetify: new Vuetify(),
+      components: { 'apexchart': VueApexCharts },
+      data() {
+        return {
+            dialog: false,
+            course: 0,
+            courses: [
+              ['https://rtanc.ac.th/wp-content/uploads/2019/08/มคอ.2-แก้ไข-14-ต.ค.55-หลักสูตร_Page_01.jpg',
+              'https://rtanc.ac.th/wp-content/uploads/2019/08/มคอ.2-แก้ไข-14-ต.ค.55-หลักสูตร_Page_02.jpg',
+            'https://rtanc.ac.th/wp-content/uploads/2019/08/มคอ.2-แก้ไข-14-ต.ค.55-หลักสูตร_Page_03.jpg',
+          'https://rtanc.ac.th/wp-content/uploads/2019/08/มคอ.2-แก้ไข-14-ต.ค.55-หลักสูตร_Page_04.jpg',
+        'https://rtanc.ac.th/wp-content/uploads/2019/08/มคอ.2-แก้ไข-14-ต.ค.55-หลักสูตร_Page_05.jpg',
+      'https://rtanc.ac.th/wp-content/uploads/2019/08/มคอ.2-แก้ไข-14-ต.ค.55-หลักสูตร_Page_06.jpg',
+    'https://rtanc.ac.th/wp-content/uploads/2019/08/มคอ.2-แก้ไข-14-ต.ค.55-หลักสูตร_Page_07.jpg',
+    'https://rtanc.ac.th/wp-content/uploads/2019/08/มคอ.2-แก้ไข-14-ต.ค.55-หลักสูตร_Page_08.jpg',
+    'https://rtanc.ac.th/wp-content/uploads/2019/08/มคอ.2-แก้ไข-14-ต.ค.55-หลักสูตร_Page_09.jpg',
+    'https://rtanc.ac.th/wp-content/uploads/2019/08/มคอ.2-แก้ไข-14-ต.ค.55-หลักสูตร_Page_10.jpg',
+    'https://rtanc.ac.th/wp-content/uploads/2019/08/มคอ.2-แก้ไข-14-ต.ค.55-หลักสูตร_Page_11.jpg',]
+  ]
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
