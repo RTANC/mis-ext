@@ -43,46 +43,58 @@
                   ภาพรวมอาจารย์พยาบาลประจำหลักสูตร
                 </v-card-title>
                 <v-card-text>
-                  <table class="w-100">
-                    <thead>
-                      <tr>
-                        <th>ชื่อ-นามสกุล</th>
-                        <th>ตำแหน่ง</th>
-                        <th>เลขที่ใบประกอบวิชาชีพ</th>
-                        <th>ปริญญาโท</th>
-                        <th>มีชั่วโมงการสอนวิชาทางการพยาบาล</th>
-                        <th>ผลงานวิจัย</th>
-                        <th>ผลงานวิชาการ</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <template v-for="teacher in teachers">
-                        <tr>
-                          <td class="w-50">
-                            {{ (teacher.gender === 2) ? teacher.rank.rank_abbr + 'หญิง ' + teacher.person_name + ' ' + teacher.person_surname : teacher.rank.rank_abbr + teacher.person_name + ' ' + teacher.person_surname }}
-                          </td>
-                          <td class="text-center">{{ generatePosition(teacher.person_positions[0]) }}</td>
-                          <td class="text-center">{{ generateLicense(teacher.person_licenses[0]) }}</td>
-                          <td>
-                            <ul>
-                              <li v-for="edu in teacher.person_educations">
-                                {{ generateEducation(edu) }}
-                              </li>
-                            </ul>
-                          </td>
-                          <td class="text-center" >{{ teacher.teacher_flag ===1 ? 'มีชั่วโมงสอน' : 'ไม่มีชั่วโมงสอน' }}</td>
-                          <td class="text-center">
-                            <!-- <ol v-html="generateResearch(teacher.researchers,1)">
-                            </ol> -->
-                            {{generateResearch(teacher.researchers,1)}}
-                          </td>
-                          <td class="text-center">
-                              {{generateResearch(teacher.researchers,2)}}
-                          </td>
-                        </tr>
-                      </template>
-                    </tbody>
-                  </table>
+                  <v-container grid-list-md fluid>
+                    <v-layout row wrap>
+                      <v-flex xs6>
+                        <apexchart type=donut width="550" :options="chartOptions1" :series="series1" />
+                      </v-flex>
+                      <v-flex xs6>
+                        <apexchart type=donut width="550" :options="chartOptions2" :series="series2" />
+                      </v-flex>
+                      <v-flex xs12>
+                          <table class="w-100">
+                              <thead>
+                                <tr>
+                                  <th>ชื่อ-นามสกุล</th>
+                                  <th>ตำแหน่ง</th>
+                                  <th>เลขที่ใบประกอบวิชาชีพ</th>
+                                  <th>ปริญญาโท</th>
+                                  <th>มีชั่วโมงการสอนวิชาทางการพยาบาล</th>
+                                  <th>ผลงานวิจัย</th>
+                                  <th>ผลงานวิชาการ</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <template v-for="teacher in teachers">
+                                  <tr>
+                                    <td class="w-50">
+                                      {{ (teacher.gender === 2) ? teacher.rank.rank_abbr + 'หญิง ' + teacher.person_name + ' ' + teacher.person_surname : teacher.rank.rank_abbr + teacher.person_name + ' ' + teacher.person_surname }}
+                                    </td>
+                                    <td class="text-center">{{ generatePosition(teacher.person_positions[0]) }}</td>
+                                    <td class="text-center">{{ generateLicense(teacher.person_licenses[0]) }}</td>
+                                    <td>
+                                      <ul>
+                                        <li v-for="edu in teacher.person_educations">
+                                          {{ generateEducation(edu) }}
+                                        </li>
+                                      </ul>
+                                    </td>
+                                    <td class="text-center" >{{ teacher.teacher_flag ===1 ? 'มีชั่วโมงสอน' : 'ไม่มีชั่วโมงสอน' }}</td>
+                                    <td class="text-center">
+                                      <!-- <ol v-html="generateResearch(teacher.researchers,1)">
+                                      </ol> -->
+                                      {{generateResearch(teacher.researchers,1)}}
+                                    </td>
+                                    <td class="text-center">
+                                        {{generateResearch(teacher.researchers,2)}}
+                                    </td>
+                                  </tr>
+                                </template>
+                              </tbody>
+                            </table>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
                 </v-card-text>
               </v-card>
             </v-flex>
@@ -94,17 +106,36 @@
 
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue-apexcharts"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
     new Vue({
       el: '#app',
       vuetify: new Vuetify(),
+      components: {
+        apexchart: VueApexCharts,
+      },
       data() {
         return {
           BASE_URL: 'http://localhost:3000/api',
-          teachers: []
+          teachers: [],
+          series1: [6, 38],
+          chartOptions1: {
+            labels: ['จำนวนอาจารย์ประจำหลักสูตรที่นับได้ครึ่งคน', 'จำนวนอาจารย์ประจำหลักสูตรที่นับได้เต็มคน'],
+            title: {
+              text: 'จำนวนอาจารย์ประจำหลักสูตรปีการศึกษา 2561',
+              align: 'left'
+          }
+        },
+        series2: [16, 30],
+        chartOptions2: {
+          labels: ['จำนวนอาจารย์ประจำหลักสูตรที่นับได้ครึ่งคน', 'จำนวนอาจารย์ประจำหลักสูตรที่นับได้เต็มคน'],
+          title: {
+            text: 'จำนวนอาจารย์ประจำหลักสูตรปีการศึกษา 2562',
+            align: 'left'
+          }
+        }
         }
       },
       methods: {
