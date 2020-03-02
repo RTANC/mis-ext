@@ -41,12 +41,15 @@
                         <v-select :items="years" v-model="year" label="ปีงบประมาณ" @change="getRetire"></v-select>
                       </v-flex>
                       <v-flex xs12 sm4 md4>
-                        <apexchart type=pie width=380 :options="chartOptions1" :series="retireInYear" />
+                        <label for="retireInYear" class="black--text">ภาพรวม บุคลากรที่เกษียณอายุราชการ ในปีงบประมาณนี้</label>
+                        <apexchart id="retireInYear" type=pie width=380 :options="chartOptions1" :series="retireInYear" />
                       </v-flex>
                       <v-flex xs12 sm4 md4>
+                        <label for="retireFiveYear" class="black--text">ภาพรวม บุคลากรที่เกษียณอายุราชการ ในอีก 5 ปี</label>
                         <apexchart type=pie width=380 :options="chartOptions2" :series="retireFiveYear" />
                       </v-flex>
                       <v-flex xs12 sm4 md4>
+                        <label for="retireTenYear" class="black--text">ภาพรวม บุคลากรที่เกษียณอายุราชการ ในอีก 10 ปี</label>
                         <apexchart type=pie width=380 :options="chartOptions3" :series="retireTenYear" />
                       </v-flex>
                       <v-flex xs12>
@@ -250,7 +253,7 @@
           BASE_URL: 'http://192.168.100.9:3000/api',
           tab: 0,
           years: [2563, 2562, 2561, 2560, 2559],
-          year: 2562,
+          year: 2563,
           retireInYear: [0, 0],
           retireInYearList: [],
           retireFiveYear: [0, 0],
@@ -259,10 +262,6 @@
           retireTenYearList: [],
           chartOptions1: {
             labels: ['ผู้บริหาร/อาจารย์', 'บุคลากรสายสนับสนุน'],
-            title: {
-              text: 'ภาพรวม บุคลากรที่เกษียณอายุราชการ ในปีงบประมาณนี้',
-              align: 'left'
-            },
             responsive: [{
               breakpoint: 480,
               options: {
@@ -277,10 +276,6 @@
           },
           chartOptions2: {
             labels: ['ผู้บริหาร/อาจารย์', 'บุคลากรสายสนับสนุน'],
-            title: {
-              text: 'ภาพรวม บุคลากรที่เกษียณอายุราชการ ในอีก 5 ปี',
-              align: 'left'
-            },
             responsive: [{
               breakpoint: 480,
               options: {
@@ -295,10 +290,6 @@
           },
           chartOptions3: {
             labels: ['ผู้บริหาร/อาจารย์', 'บุคลากรสายสนับสนุน'],
-            title: {
-              text: 'ภาพรวม บุคลากรที่เกษียณอายุราชการ ในอีก 10 ปี',
-              align: 'left'
-            },
             responsive: [{
               breakpoint: 480,
               options: {
